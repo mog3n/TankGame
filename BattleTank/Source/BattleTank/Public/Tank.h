@@ -5,6 +5,7 @@
 #include "TankAimingComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "TankBarrel.h"
 #include "Tank.generated.h"
 
 UCLASS()
@@ -17,7 +18,7 @@ public:
 	ATank();
 
 	UFUNCTION(BlueprintCallable, Category=Setup)
-		void SetBarrelRef(UStaticMeshComponent* BarrelToSet);
+		void SetBarrelRef(UTankBarrel* BarrelToSet);
 	UPROPERTY(EditAnywhere, Category=Firing)
 		float FiringSpeed = 20000.f;
 
