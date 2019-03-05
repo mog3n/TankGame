@@ -24,6 +24,9 @@ public:
 		void SetBarrelReference(UTankBarrel* BarrelToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetTurretReference(UTankTurret* TurretToSet);
+	UFUNCTION(BlueprintCallable)
+		void Fire();
+	
 	UPROPERTY(EditAnywhere, Category=Firing)
 		float FiringSpeed = 20000.f;
 
