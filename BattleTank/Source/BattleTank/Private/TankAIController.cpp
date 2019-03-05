@@ -5,13 +5,31 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 
+void ATankAIController::BeginPlay() {
+	Super::BeginPlay();
+	ThisTankPawn = GetTankPawn();
+	TargetTankPawn = GetPlayerTank();
+}
+
+void ATankAIController::Tick(float TimeDelta) {
+	Super::Tick(TimeDelta);
+	if (ThisTankPawn) {
+		// Move towards player
+
+
+		// Aim at player
+		ThisTankPawn->AimAt(TargetTankPawn->GetActorLocation());
+	}
+
+}
+
 ATank* ATankAIController::GetTankPawn() const {
 	ATank* TankPawn = Cast<ATank>(GetPawn());
 	if (TankPawn) {
-		UE_LOG(LogTemp, Warning, TEXT("AI is controlling: %s"), *TankPawn->GetName());
+		//UE_LOG(LogTemp, Warning, TEXT("AI is controlling: %s"), *TankPawn->GetName());
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("AI is NOT controlling this tank."));
+		//UE_LOG(LogTemp, Warning, TEXT("AI is NOT controlling this tank."));
 	}
 	return TankPawn;
 }
@@ -22,16 +40,10 @@ ATank * ATankAIController::GetPlayerTank() const
 	ATank* PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	// Check
 	if (PlayerTank) {
-		UE_LOG(LogTemp, Warning, TEXT("AI is targetting: %s"), *PlayerTank->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("AI Tank is targetting: %s"), *PlayerTank->GetName());
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("AI is NOT targetting anything"));
+		UE_LOG(LogTemp, Warning, TEXT("AI Tank is NOT targetting anything"));
 	}
 	return PlayerTank;
-}
-
-void ATankAIController::BeginPlay() {
-	Super::BeginPlay();
-	auto AITank = GetTankPawn();
-	auto Playertank = GetPlayerTank();
 }
