@@ -3,5 +3,5 @@
 #include "TankBarrel.h"
 
 void UTankBarrel::Elevate(float DegreesPerSecond) {
-	UE_LOG(LogTemp, Warning, TEXT("BarrelElevate: %s"), DegreesPerSecond);
+	//UE_LOG(LogTemp, Warning, TEXT("BarrelElevate: %f"), DegreesPerSecond);
 }
