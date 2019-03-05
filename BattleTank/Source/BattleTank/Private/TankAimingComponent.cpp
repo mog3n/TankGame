@@ -2,6 +2,9 @@
 
 
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
+#include "TankTurret.h"
+
 #include "GameFramework/Actor.h"
 #include "Engine/Classes/Components/StaticMeshComponent.h"
 #include "Engine/Classes/Kismet/GameplayStatics.h"
@@ -17,7 +20,8 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(FVector Location, float FiringSpeed)
 {
-	if (!Barrel) {return;}
+	if (!Barrel) { UE_LOG(LogTemp, Error, TEXT("Barrel not set on %s"), *GetOwner()->GetName()); return; }
+	if (!Turret) { UE_LOG(LogTemp, Error, TEXT("Turret not set on %s"), *GetOwner()->GetName());  return; }
 	FVector OutLaunchVelocity = FVector();
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	
@@ -35,11 +39,10 @@ void UTankAimingComponent::AimAt(FVector Location, float FiringSpeed)
 	);
 
 	if (didGetProjectileVelocity) {
-		//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at: %s"), *GetOwner()->GetName(), *AimDirection.ToString());
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		MoveBarrelTowards(AimDirection);
+		//UE_LOG(LogTemp, Warning, TEXT("%f Aim solution found"), GetWorld()->GetTimeSeconds());
 	}
-
-	auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-	MoveBarrelTowards(AimDirection);
 
 }
 
@@ -48,16 +51,25 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 	Barrel = BarrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet) {
+	Turret = TurretToSet;
+}
+
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
+	// If aim direction is zero, then don't move the barrel
+	if (AimDirection.IsZero()) { return; }
+
 	// get diff between current rotation and aim direction
 	// given max elevation speed and frame time
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
-	auto DeltaRotator = AimAsRotator - BarrelRotator;
+
+	auto DeltaBarrelRotator = AimAsRotator - BarrelRotator;
 
 	// Move barrel the right amount
-	Barrel->Elevate(5); //TODO remove magic num
+	Barrel->Elevate(DeltaBarrelRotator.Pitch);
+	Turret->Rotate(DeltaBarrelRotator.Yaw);
 
 	//UE_LOG(LogTemp, Warning, TEXT("BarrelRotator: %s, Aim: %s"), *BarrelRotator.ToString(), *AimAsRotator.ToString());
 }

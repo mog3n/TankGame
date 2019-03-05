@@ -1,6 +1,7 @@
 // Copyright should be here but im lazy af lmao idk what company this is for
 
 
+#include "Tank.h"
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 #include "Engine/Public/DrawDebugHelpers.h"
