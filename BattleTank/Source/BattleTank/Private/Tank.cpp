@@ -26,20 +26,27 @@ void ATank::Tick(float DeltaTime)
 
 }
 
+
+
+void ATank::SetBarrelRef(UStaticMeshComponent * BarrelToSet)
+{
+	TankAimingComponent->SetBarrelReference(BarrelToSet);
+}
+
+
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void ATank::AimAt(FVector HitLocation)
 {
-	TankAimingComponent->AimAt(HitLocation);
+	TankAimingComponent->AimAt(HitLocation, FiringSpeed);
 
 	// Visualize the aim targets
 	FVector Start = GetActorLocation();
 	FVector End = HitLocation;
-	DrawDebugLine(GetWorld(), Start, End, FColor(255, 0, 0), false, -1.f, 100, 10.f);
+	// DrawDebugLine(GetWorld(), Start, End, FColor(255, 0, 0), false, -1.f, 100, 10.f);
 }
 
