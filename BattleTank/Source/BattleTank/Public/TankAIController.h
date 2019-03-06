@@ -22,9 +22,6 @@ public:
 	void BeginPlay() override;
 
 private:
-	ATank* GetTankPawn() const;
-	ATank* GetPlayerTank() const;
-
 	// vars
 	ATank* ThisTankPawn;
 	ATank* TargetTankPawn;
