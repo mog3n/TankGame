@@ -21,6 +21,9 @@ public:
 	void Tick(float TimeDelta) override;
 	void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly)
+	float AcceptableRadius = 10;
+
 private:
 	// vars
 	ATank* ThisTankPawn;

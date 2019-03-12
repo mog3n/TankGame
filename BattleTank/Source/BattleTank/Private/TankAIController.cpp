@@ -16,7 +16,9 @@ void ATankAIController::Tick(float TimeDelta) {
 	Super::Tick(TimeDelta);
 	if (!ThisTankPawn) { return; }
 	if (!TargetTankPawn) { return; }
+	
 	// Move towards player
+	MoveToActor(TargetTankPawn, AcceptableRadius); //Todo: Check radius is in cm
 
 	// Aim at player
 	ThisTankPawn->AimAt(TargetTankPawn->GetActorLocation());
