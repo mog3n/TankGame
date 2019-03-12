@@ -11,6 +11,7 @@
 #include "Core/Public/Math/Rotator.h"
 
 
+
 UTankAimingComponent::UTankAimingComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -46,15 +47,11 @@ void UTankAimingComponent::AimAt(FVector Location, float FiringSpeed)
 
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
+void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
 {
 	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet) {
 	Turret = TurretToSet;
 }
-
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 	// If aim direction is zero, then don't move the barrel

@@ -21,7 +21,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Methods
+protected:
+	UFUNCTION(BlueprintCallable, Category="Setup")
 	ATank* GetControlledTank() const;
+
+public:
 	void AimTowardsCrosshair();
 	bool GetCrosshairHitLocation(FVector &HitLocation);
 	bool GetLookRotationFromCrosshair(FVector2D ScreenPosition, FVector &LookDirection);
