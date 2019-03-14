@@ -5,32 +5,38 @@
 #include "Tank.h"
 #include "Engine/World.h"
 #include "Engine/Public/DrawDebugHelpers.h"
+#include "TankAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
 	ControlledTank = GetControlledTank();
-	UE_LOG(LogTemp, Warning, TEXT("Player is controlling: %s"), *ControlledTank->GetName());
+	AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>(); // assume 1 comp
+	if (AimingComponent) {
+		FoundAimingComponent(AimingComponent);
+	}
+	else { UE_LOG(LogTemp, Warning, TEXT("No aiming component found at begin play!!! UI will not work properly")); }
+	// UE_LOG(LogTemp, Warning, TEXT("Player is controlling: %s"), *ControlledTank->GetName());
 }
+
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsCrosshair(); // Aim towards the crosshair...
 }
 
-// Gets player controlled tank
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn()); // get the pawn as ATank
 }
 
-// Aim tank towards crosshair
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ControlledTank) { return; } // Ensure tank exists
+	if (!ensure(ControlledTank)) { return; } // Ensure tank exists
 	FVector HitLocation;
 	if (GetCrosshairHitLocation(HitLocation)) {
-		ControlledTank->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 	}
 }
 

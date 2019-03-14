@@ -9,6 +9,7 @@
 #include "TankAIController.generated.h"
 
 class ATank;
+class UTankAimingComponent;
 
 /**
  * 
@@ -28,5 +29,6 @@ private:
 	// vars
 	ATank* ThisTankPawn;
 	ATank* TargetTankPawn;
+	UTankAimingComponent* AimingComponent;
 
 };
